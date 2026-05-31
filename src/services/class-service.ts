@@ -1,0 +1,118 @@
+import type { GymClass } from "@/types/classes";
+
+const mockClasses: GymClass[] = [
+  {
+    id: "cls-001",
+    title: "Power Lifting",
+    category: "Strength",
+    day: "Monday",
+    startTime: "06:00",
+    durationMinutes: 60,
+    trainer: "Kofi Mensah",
+    trainerId: "trn-001",
+    enrolled: 18,
+    capacity: 20,
+    description: "Build raw strength with compound lifts under expert guidance.",
+  },
+  {
+    id: "cls-002",
+    title: "HIIT Burn",
+    category: "HIIT",
+    day: "Monday",
+    startTime: "08:00",
+    durationMinutes: 45,
+    trainer: "Abena Owusu",
+    trainerId: "trn-002",
+    enrolled: 12,
+    capacity: 20,
+    description: "High-intensity intervals designed to torch calories fast.",
+  },
+  {
+    id: "cls-003",
+    title: "Morning Yoga",
+    category: "Yoga",
+    day: "Tuesday",
+    startTime: "07:00",
+    durationMinutes: 60,
+    trainer: "Efua Asante",
+    trainerId: "trn-003",
+    enrolled: 10,
+    capacity: 15,
+    description: "Start your day with mindful movement and breathwork.",
+  },
+  {
+    id: "cls-004",
+    title: "Cardio Blast",
+    category: "Cardio",
+    day: "Wednesday",
+    startTime: "06:30",
+    durationMinutes: 45,
+    trainer: "Kofi Mensah",
+    trainerId: "trn-001",
+    enrolled: 20,
+    capacity: 20,
+    description: "Sustained cardio to build endurance and burn fat.",
+  },
+  {
+    id: "cls-005",
+    title: "Strength & Conditioning",
+    category: "Strength",
+    day: "Thursday",
+    startTime: "07:00",
+    durationMinutes: 75,
+    trainer: "Abena Owusu",
+    trainerId: "trn-002",
+    enrolled: 14,
+    capacity: 20,
+    description: "Functional strength training for all fitness levels.",
+  },
+  {
+    id: "cls-006",
+    title: "Recovery & Wellness",
+    category: "Wellness",
+    day: "Friday",
+    startTime: "09:00",
+    durationMinutes: 60,
+    trainer: "Efua Asante",
+    trainerId: "trn-003",
+    enrolled: 8,
+    capacity: 15,
+    description: "Mobility work, stretching, and active recovery techniques.",
+  },
+  {
+    id: "cls-007",
+    title: "Saturday HIIT",
+    category: "HIIT",
+    day: "Saturday",
+    startTime: "08:00",
+    durationMinutes: 45,
+    trainer: "Kofi Mensah",
+    trainerId: "trn-001",
+    enrolled: 19,
+    capacity: 20,
+    description: "End your week strong with our most popular HIIT session.",
+  },
+  {
+    id: "cls-008",
+    title: "Sunday Yoga Flow",
+    category: "Yoga",
+    day: "Sunday",
+    startTime: "10:00",
+    durationMinutes: 60,
+    trainer: "Efua Asante",
+    trainerId: "trn-003",
+    enrolled: 9,
+    capacity: 15,
+    description: "A gentle flow to restore and reset before the week ahead.",
+  },
+];
+
+export async function fetchAllClasses(): Promise<GymClass[]> {
+  await new Promise((r) => setTimeout(r, 1000));
+  return mockClasses;
+}
+
+export async function fetchClassById(id: string): Promise<GymClass | undefined> {
+  await new Promise((r) => setTimeout(r, 500));
+  return mockClasses.find((c) => c.id === id);
+}
