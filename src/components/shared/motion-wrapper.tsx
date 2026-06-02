@@ -8,24 +8,22 @@ import {
 } from "framer-motion";
 
 // ─── FadeUp ──────────────────────────────────────────────────────────────────
-// Wraps any section. Fades it up on scroll into view.
-// Uses whileInView so it only fires once per page load.
 
 const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
   },
 };
 
 interface FadeUpProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
   className?: string;
+  delay?: number;
 }
 
-export function FadeUp({ children, className, ...props }: FadeUpProps) {
+export function FadeUp({ children, className, delay = 0, ...props }: FadeUpProps) {
   const shouldReduce = useReducedMotion();
 
   return (
@@ -34,6 +32,11 @@ export function FadeUp({ children, className, ...props }: FadeUpProps) {
       initial={shouldReduce ? undefined : "hidden"}
       whileInView={shouldReduce ? undefined : "visible"}
       viewport={{ once: true, margin: "-80px" }}
+      transition={{
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        delay,
+      }}
       className={className}
       {...props}
     >
@@ -43,7 +46,6 @@ export function FadeUp({ children, className, ...props }: FadeUpProps) {
 }
 
 // ─── StaggerContainer ────────────────────────────────────────────────────────
-// Wraps a grid of cards. Triggers staggered children.
 
 const staggerContainerVariants: Variants = {
   hidden: {},
@@ -79,7 +81,6 @@ export function StaggerContainer({
 }
 
 // ─── StaggerItem ─────────────────────────────────────────────────────────────
-// Wraps each card inside a StaggerContainer.
 
 const staggerItemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -110,9 +111,8 @@ export function StaggerItem({ children, className, ...props }: StaggerItemProps)
 }
 
 // ─── AnimatedHeadline ────────────────────────────────────────────────────────
-// Splits the headline into individual words and animates each one on page load.
-// opacity 0→1, y 40→0, blur 8px→0px staggered at 0.12s per word.
-// Always uses font-display font-extrabold (Syne 800).
+// Accepts a plain text string. Splits into words and animates each on mount.
+// For headlines that need styled spans (neon words etc.), animate inline instead.
 
 interface AnimatedHeadlineProps {
   text: string;
@@ -137,7 +137,10 @@ export function AnimatedHeadline({ text, className }: AnimatedHeadlineProps) {
       aria-label={text}
     >
       {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.25em] last:mr-0">
+        <span
+          key={i}
+          className="inline-block overflow-hidden mr-[0.25em] last:mr-0"
+        >
           <motion.span
             className="inline-block"
             initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
@@ -157,8 +160,6 @@ export function AnimatedHeadline({ text, className }: AnimatedHeadlineProps) {
 }
 
 // ─── AnimatedSubtext ─────────────────────────────────────────────────────────
-// Animates a paragraph or subheadline on page load.
-// opacity 0→1, y 20→0. Accepts a delay prop so it fires after the headline.
 
 interface AnimatedSubtextProps {
   children: React.ReactNode;
