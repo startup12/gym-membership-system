@@ -10,7 +10,7 @@ export interface MembershipTier {
   name: string;
   priceMonthly: number;
   description: string;
-  features: MembershipFeature[];
-  isPopular: boolean;
+  features: string[];
+  isPopular?: boolean;
   ctaLabel: string;
 }
