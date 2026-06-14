@@ -7,15 +7,33 @@ import {
   type HTMLMotionProps,
 } from "framer-motion";
 
-// ─── FadeUp ──────────────────────────────────────────────────────────────────
+// ─── Base Variants ───────────────────────────────────────────────────────────
 
 const fadeUpVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 32 },
   visible: {
     opacity: 1,
     y: 0,
   },
 };
+
+const staggerContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.085, delayChildren: 0.1 },
+  },
+};
+
+const staggerItemVariants: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.23, 0.48, 0.38, 0.96] },
+  },
+};
+
+// ─── FadeUp ──────────────────────────────────────────────────────────────────
 
 interface FadeUpProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
@@ -31,10 +49,10 @@ export function FadeUp({ children, className, delay = 0, ...props }: FadeUpProps
       variants={shouldReduce ? undefined : fadeUpVariants}
       initial={shouldReduce ? undefined : "hidden"}
       whileInView={shouldReduce ? undefined : "visible"}
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, margin: "-100px" }}
       transition={{
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        duration: 0.65,
+        ease: [0.23, 0.48, 0.38, 0.96],
         delay,
       }}
       className={className}
@@ -46,13 +64,6 @@ export function FadeUp({ children, className, delay = 0, ...props }: FadeUpProps
 }
 
 // ─── StaggerContainer ────────────────────────────────────────────────────────
-
-const staggerContainerVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
 
 interface StaggerContainerProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
@@ -82,15 +93,6 @@ export function StaggerContainer({
 
 // ─── StaggerItem ─────────────────────────────────────────────────────────────
 
-const staggerItemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
-};
-
 interface StaggerItemProps extends HTMLMotionProps<"div"> {
   children: React.ReactNode;
   className?: string;
@@ -111,21 +113,26 @@ export function StaggerItem({ children, className, ...props }: StaggerItemProps)
 }
 
 // ─── AnimatedHeadline ────────────────────────────────────────────────────────
-// Accepts a plain text string. Splits into words and animates each on mount.
-// For headlines that need styled spans (neon words etc.), animate inline instead.
 
 interface AnimatedHeadlineProps {
   text: string;
   className?: string;
+  highlightLastWord?: boolean; // e.g. highlight "YESTERDAY."
+  highlightColor?: string;
 }
 
-export function AnimatedHeadline({ text, className }: AnimatedHeadlineProps) {
+export function AnimatedHeadline({
+  text,
+  className,
+  highlightLastWord = false,
+  highlightColor = "text-brand-primary",
+}: AnimatedHeadlineProps) {
   const shouldReduce = useReducedMotion();
   const words = text.split(" ");
 
   if (shouldReduce) {
     return (
-      <h1 className={`font-display font-extrabold ${className ?? ""}`}>
+      <h1 className={`font-display font-bold tracking-[-0.03em] ${className ?? ""}`}>
         {text}
       </h1>
     );
@@ -133,28 +140,33 @@ export function AnimatedHeadline({ text, className }: AnimatedHeadlineProps) {
 
   return (
     <h1
-      className={`font-display font-extrabold tracking-tight leading-none ${className ?? ""}`}
+      className={`font-display font-bold tracking-[-0.03em] leading-[0.92] ${className ?? ""}`}
       aria-label={text}
     >
-      {words.map((word, i) => (
-        <span
-          key={i}
-          className="inline-block overflow-hidden mr-[0.25em] last:mr-0"
-        >
-          <motion.span
-            className="inline-block"
-            initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{
-              duration: 0.7,
-              delay: i * 0.12,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
+      {words.map((word, i) => {
+        const isLast = i === words.length - 1;
+        const shouldHighlight = highlightLastWord && isLast;
+
+        return (
+          <span
+            key={i}
+            className="inline-block overflow-hidden mr-[0.3em] last:mr-0"
           >
-            {word}
-          </motion.span>
-        </span>
-      ))}
+            <motion.span
+              className={`inline-block ${shouldHighlight ? highlightColor : ""}`}
+              initial={{ opacity: 0, y: 42 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.75,
+                delay: i * 0.09,
+                ease: [0.23, 0.48, 0.38, 0.96],
+              }}
+            >
+              {word}
+            </motion.span>
+          </span>
+        );
+      })}
     </h1>
   );
 }
@@ -169,7 +181,7 @@ interface AnimatedSubtextProps {
 
 export function AnimatedSubtext({
   children,
-  delay = 0.5,
+  delay = 0.4,
   className,
 }: AnimatedSubtextProps) {
   const shouldReduce = useReducedMotion();
@@ -181,7 +193,7 @@ export function AnimatedSubtext({
       transition={{
         duration: 0.6,
         delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        ease: [0.23, 0.48, 0.38, 0.96],
       }}
       className={className}
     >
