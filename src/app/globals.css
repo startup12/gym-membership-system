@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  /* === Colors === */
+  --color-brand-primary: #25D366;           /* WhatsApp-style green */
+  --color-brand-accent: #22C55E;
+  --color-brand-cyan: #67E8F9;
+  --color-brand-dark: #0A0A0A;
+  --color-brand-surface: #111113;
+  --color-brand-surface-2: #1A1A1F;
+  --color-brand-border: #27272A;
+  --color-brand-muted: #A1A1AA;
+  --color-brand-text: #FAFAFA;
+
+  /* Typography */
+  --font-display: var(--font-syne), system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+
+  /* Enhanced Shadows / Glows (more premium) */
+  --shadow-glow-sm: 0 0 12px rgba(37, 211, 102, 0.3);
+  --shadow-glow-md: 0 0 25px rgba(37, 211, 102, 0.35),
+                    0 0 50px rgba(37, 211, 102, 0.15);
+  --shadow-glow-lg: 0 0 30px rgba(37, 211, 102, 0.4),
+                    0 0 70px rgba(37, 211, 102, 0.2);
+
+  /* Fitness energy accents */
+  --color-energy-orange: #F97316;
+}
+
+@layer base {
+
+  @layer base {
+  html {
+    color-scheme: dark;
+  }
+}
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-brand-dark);
+    color: var(--color-brand-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+
+  /* Better button & interactive defaults */
+  button, a {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-brand-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-border);
+  border-radius: 20px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-primary);
+}
